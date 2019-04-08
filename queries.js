@@ -21,7 +21,7 @@ const getSalaries = (_request, response) => {
 };
 
 const deleteSalaries = (_request, response) => {
-  client.query('DELETE * FROM salaries;', (error, _results) => {
+  client.query('DELETE FROM salaries;', (error, _results) => {
     if (error) {
       throw error;
     }
@@ -33,7 +33,6 @@ const createSalary = (request, response) => {
   const { playerId, salary } = request.body;
 
   if (!playerId || !salary) {
-    console.log('*************', request.body);
     response.json({ errorMsg: `Not enough data provided: ${playerId}` });
     return;
   }
