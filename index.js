@@ -5,7 +5,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // const db = require('./queries');
 const app = express();
-const port = 8080;
 
 app.use(bodyParser.json());
 app.use(
@@ -23,6 +22,6 @@ app.get('/', (_request, response) => {
 // app.put('/users/:id', db.updateUser);
 // app.delete('/users/:id', db.deleteUser);
 
-app.listen(port, () => {
-  console.log(`App running on port ${port}.`);
+app.listen(process.env.PORT, () => {
+  console.log(`App running on port ${process.env.PORT}.`);
 });
