@@ -40,6 +40,7 @@ app.use(function(req, res, next) {
 app.get('/', db.getHome);
 app.get('/salaries', db.getSalaries);
 app.post('/salaries', db.createSalary);
+app.delete('/salaries', db.deleteSalaries);
 
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}.`);

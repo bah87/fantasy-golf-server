@@ -20,6 +20,15 @@ const getSalaries = (_request, response) => {
   });
 };
 
+const deleteSalaries = (_request, response) => {
+  client.query('DELETE * FROM salaries;', (error, _results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).send('All salaries deleted.');
+  });
+};
+
 const createSalary = (request, response) => {
   const { playerId, salary } = request.body;
 
@@ -44,5 +53,6 @@ const createSalary = (request, response) => {
 module.exports = {
   getHome,
   getSalaries,
+  deleteSalaries,
   createSalary
 };
