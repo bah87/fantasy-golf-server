@@ -24,7 +24,8 @@ const createSalary = (request, response) => {
   const { playerId, salary } = request.body;
 
   if (!playerId || !salary) {
-    response.json({ errorMsg: `Not enough data provided: ${request}` });
+    console.log('*************', request);
+    response.json({ errorMsg: `Not enough data provided: ${playerId}` });
     return;
   }
 
