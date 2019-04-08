@@ -23,6 +23,10 @@ const getSalaries = (_request, response) => {
 const createSalary = (request, response) => {
   const { playerId, salary } = request.body;
 
+  if (!playerId || !salary) {
+    response.json({ errorMsg: `Not enough data provided: ${request}` });
+  }
+
   client.query(
     'INSERT INTO salaries (player_id, salary) VALUES ($1, $2)',
     [playerId, salary],
