@@ -25,6 +25,7 @@ const createSalary = (request, response) => {
 
   if (!playerId || !salary) {
     response.json({ errorMsg: `Not enough data provided: ${request}` });
+    return;
   }
 
   client.query(
