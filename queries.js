@@ -55,7 +55,9 @@ const createTeam = (request, response) => {
   ),
     (error, _results) => {
       if (error) {
-        throw error;
+        console.log('........', error);
+        response.json({ error });
+        return;
       }
       response.status(201).send('Team added successfully');
     };
