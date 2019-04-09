@@ -15,9 +15,6 @@ app.use(
 );
 // Add headers
 app.use(function(req, res, next) {
-  // Disable cors
-  res.setHeader(false);
-
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
