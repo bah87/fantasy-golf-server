@@ -29,6 +29,29 @@ const deleteSalaries = (_request, response) => {
   });
 };
 
+const createTeam = (request, response) => {
+  const { name, team } = request.body;
+
+  if (!name || !team) {
+    response.json({ errorMsg: 'Not enough data provided.' });
+    return;
+  } else if (team.length != 6) {
+    response.json({ errorMsg: 'Team length must be 6.' });
+    return;
+  }
+
+  client.query(
+    'INSERT INTO teams (name, players) values ($1, ARRAY [$2, $3, $4, $5, $6, $7]);',
+    [name, ...team]
+  ),
+    (error, _results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(201).send('Team added successfully');
+    };
+};
+
 const createSalary = (request, response) => {
   const { playerId, salary } = request.body;
 
@@ -53,5 +76,6 @@ module.exports = {
   getHome,
   getSalaries,
   deleteSalaries,
-  createSalary
+  createSalary,
+  createTeam
 };

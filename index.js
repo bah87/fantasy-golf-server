@@ -40,6 +40,7 @@ app.use(function(req, res, next) {
 app.get('/', db.getHome);
 app.get('/salaries', db.getSalaries);
 app.post('/salaries', db.createSalary);
+app.post('/team', db.createTeam);
 app.delete('/salaries', db.deleteSalaries);
 
 app.listen(process.env.PORT, () => {
