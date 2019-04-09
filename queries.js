@@ -29,6 +29,15 @@ const deleteSalaries = (_request, response) => {
   });
 };
 
+const getTeams = (_request, response) => {
+  client.query('SELECT * FROM teams;', (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
 const createTeam = (request, response) => {
   const { name, team } = request.body;
 
@@ -77,5 +86,6 @@ module.exports = {
   getSalaries,
   deleteSalaries,
   createSalary,
-  createTeam
+  createTeam,
+  getTeams
 };

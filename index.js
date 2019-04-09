@@ -40,8 +40,9 @@ app.use(function(req, res, next) {
 app.get('/', db.getHome);
 app.get('/salaries', db.getSalaries);
 app.post('/salaries', db.createSalary);
-app.post('/team', db.createTeam);
 app.delete('/salaries', db.deleteSalaries);
+app.post('/teams', db.createTeam);
+app.get('/teams', db.getTeams);
 
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}.`);
