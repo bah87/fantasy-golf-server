@@ -40,10 +40,18 @@ app.use(
 //   // Pass to next layer of middleware
 //   next();
 // });
-
+const whitelist = [
+  'http://localhost:3000',
+  'https://fantasy-golf-app.herokuapp.com/'
+];
 const corsOptionsDelegate = (_req, callback) => {
-  // disable CORS
-  callback(null, { origin: false });
+  let corsOptions;
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false }; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
 };
 
 app.get('/', cors(corsOptionsDelegate), db.getHome);
