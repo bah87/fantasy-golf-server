@@ -51,8 +51,7 @@ const createTeam = (request, response) => {
 
   client.query(
     'INSERT INTO teams (name, players) values ($1, ARRAY [$2, $3, $4, $5, $6, $7]);',
-    [name, ...team]
-  ),
+    [name, ...team],
     (error, _results) => {
       if (error) {
         console.log('........', error);
@@ -60,7 +59,8 @@ const createTeam = (request, response) => {
         return;
       }
       response.status(201).send('Team added successfully');
-    };
+    }
+  );
 };
 
 const createSalary = (request, response) => {
