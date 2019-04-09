@@ -54,11 +54,10 @@ const createTeam = (request, response) => {
     [name, ...team],
     (error, _results) => {
       if (error) {
-        console.log('........', error);
         response.json({ error });
         return;
       }
-      response.status(201).send('Team added successfully');
+      response.json({ status: 'success' });
     }
   );
 };
