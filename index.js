@@ -59,6 +59,7 @@ app.get('/salaries', db.getSalaries);
 app.post('/salaries', db.createSalary);
 app.delete('/salaries', db.deleteSalaries);
 app.post('/teams', db.createTeam);
+app.put('/teams', db.updateTeam);
 app.get('/teams', db.getTeams);
 
 app.listen(process.env.PORT, () => {
