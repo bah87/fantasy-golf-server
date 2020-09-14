@@ -127,23 +127,24 @@ const localPassportStrategy = (req, email, password, done) => {
 
 const signUp = (req, res) => {
   console.log('request body', req.body);
-  const hashedPassword = bcrypt.hash(req.body.password, 5);
-  client.query('SELECT id FROM users WHERE email=$1', [req.body.email], (err, result) => {
-    if (result.rows[0]) {
-      res.send({ error: 'This email address is already registered.' });
-    } else {
-      client.query(
-        'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)',
-        [req.body.name, req.body.email, hashedPassword],
-        (err, result) => {
-          if (err) {
-            console.log('error trying to add new user', err);
-          } else {
-            res.send({ message: 'User created successfully' });
+  bcrypt.hash(req.body.password, 5, (err, hashedPassword) => {
+    client.query('SELECT id FROM users WHERE email=$1', [req.body.email], (err, result) => {
+      if (result.rows[0]) {
+        res.send({ error: 'This email address is already registered.' });
+      } else {
+        client.query(
+          'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)',
+          [req.body.name, req.body.email, hashedPassword],
+          (err, result) => {
+            if (err) {
+              console.log('error trying to add new user', err);
+            } else {
+              res.send({ message: 'User created successfully' });
+            }
           }
-        }
-      );
-    }
+        );
+      }
+    });
   });
 };
 
