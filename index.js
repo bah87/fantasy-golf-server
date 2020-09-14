@@ -1,5 +1,8 @@
 // load all env variables from .env file into process.env object.
 require('dotenv').config();
+const passport = require('passport');
+const session = require('express-session');
+const LocalStrategy = require('passport-local').Strategy;
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -7,31 +10,27 @@ const cors = require('cors');
 const db = require('./queries');
 const app = express();
 
+app.use(require('cookie-parser')());
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 // Add headers
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    'https://fantasy-golf-app.herokuapp.com'
-  );
+  res.setHeader('Access-Control-Allow-Origin', 'https://fantasy-golf-app.herokuapp.com');
 
   // Request methods you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
   // Request headers you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With,content-type'
-  );
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
@@ -54,6 +53,8 @@ app.use(function(req, res, next) {
 //   callback(null, corsOptions); // callback expects two parameters: error and options
 // };
 
+passport.use('local', new LocalStrategy({ passReqToCallback: true }, db.localPassportStrategy));
+
 app.get('/', db.getHome);
 app.get('/salaries', db.getSalaries);
 app.post('/salaries', db.createSalary);
@@ -61,6 +62,15 @@ app.delete('/salaries', db.deleteSalaries);
 app.post('/teams', db.createTeam);
 app.put('/teams', db.updateTeam);
 app.get('/teams', db.getTeams);
+app.post('/signup', db.signUp);
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}.`);
