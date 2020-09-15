@@ -83,30 +83,30 @@ app.get('/user', (req, res, next) => {
     });
   }
 });
-// app.post('/login', passport.authenticate('local'), function (req, res) {
-//   console.log(req.user, req.session, req.body);
-//   if (req.body.remember) {
-//     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
-//   } else {
-//     req.session.cookie.expires = false; // Cookie expires at end of session
-//   }
-//   req.session.user = { email: req.body.email };
-//   res.status(200).json({ session: req.session });
-// });
-
-app.post('/login', function (req, res, next) {
-  passport.authenticate('local', function (err, user, info) {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.send({ message: 'no user...' });
-    }
-
-    // NEED TO CALL req.login()!!!
-    req.login(user, next);
-  })(req, res, next);
+app.post('/login', passport.authenticate('local'), function (req, res) {
+  console.log('isAuthenticated???', req.isAuthenticated());
+  if (req.body.remember) {
+    req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
+  } else {
+    req.session.cookie.expires = false; // Cookie expires at end of session
+  }
+  req.session.user = { email: req.body.email };
+  res.status(200).json({ session: req.session });
 });
+
+// app.post('/login', function (req, res, next) {
+//   passport.authenticate('local', function (err, user, info) {
+//     if (err) {
+//       return next(err);
+//     }
+//     if (!user) {
+//       return res.send({ message: 'no user...' });
+//     }
+
+//     // NEED TO CALL req.login()!!!
+//     req.login(user, next);
+//   })(req, res, next);
+// });
 
 passport.serializeUser(function (user, done) {
   done(null, user);

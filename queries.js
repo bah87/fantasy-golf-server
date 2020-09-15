@@ -104,6 +104,7 @@ const createSalary = (request, response) => {
 };
 
 const localPassportStrategy = (email, password, done) => {
+  console.log('localPassportStrategy', email, password);
   client.query('SELECT id, name, email, password FROM users WHERE email=$1', [email], (err, result) => {
     console.log('authenticating...', err, result);
     if (err) {
@@ -117,7 +118,7 @@ const localPassportStrategy = (email, password, done) => {
           console.log('Error while checking password');
           return done();
         } else if (check) {
-          return done(null, [{ email: result.rows[0].email, name: result.rows[0].name }]);
+          return done(null, { email: result.rows[0].email, name: result.rows[0].name });
         } else {
           return done(null, false);
         }
