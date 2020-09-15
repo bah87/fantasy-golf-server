@@ -40,9 +40,9 @@ const getTeams = (_request, response) => {
 };
 
 const updateTeam = (request, response) => {
-  const { name, team } = request.body;
+  const { email, team } = request.body;
 
-  if (!name || !team) {
+  if (!email || !team) {
     response.json({ errorMsg: 'Not enough data provided.' });
     return;
   } else if (team.length != 6) {
@@ -52,7 +52,7 @@ const updateTeam = (request, response) => {
 
   client.query(
     'UPDATE teams SET players = ARRAY [$1, $2, $3, $4, $5, $6] WHERE name = $7;',
-    [...team, name],
+    [...team, email],
     (error, _results) => {
       if (error) {
         response.json({ error });
@@ -64,9 +64,9 @@ const updateTeam = (request, response) => {
 };
 
 const createTeam = (request, response) => {
-  const { name, team } = request.body;
+  const { email, team } = request.body;
 
-  if (!name || !team) {
+  if (!email || !team) {
     response.json({ errorMsg: 'Not enough data provided.' });
     return;
   } else if (team.length != 6) {
@@ -76,7 +76,7 @@ const createTeam = (request, response) => {
 
   client.query(
     'INSERT INTO teams (name, players) values ($1, ARRAY [$2, $3, $4, $5, $6, $7]);',
-    [name, ...team],
+    [email, ...team],
     (error, _results) => {
       if (error) {
         response.json({ error });
