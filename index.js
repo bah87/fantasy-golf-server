@@ -53,7 +53,13 @@ app.use(function (req, res, next) {
 //   callback(null, corsOptions); // callback expects two parameters: error and options
 // };
 
-passport.use('local', new LocalStrategy({ passReqToCallback: true }, db.localPassportStrategy));
+passport.use(
+  'local',
+  new LocalStrategy(
+    { usernameField: 'email', passwordField: 'password', passReqToCallback: true },
+    db.localPassportStrategy
+  )
+);
 
 app.get('/', db.getHome);
 app.get('/salaries', db.getSalaries);
