@@ -79,6 +79,14 @@ app.get('/user', (req, res, next) => {
     });
   }
 });
+app.post('/login', passport.authenticate('local'), function (req, res) {
+  if (req.body.remember) {
+    req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
+  } else {
+    req.session.cookie.expires = false; // Cookie expires at end of session
+  }
+  res.status(200).json({ session: req.session });
+});
 
 passport.serializeUser(function (user, done) {
   done(null, user);
