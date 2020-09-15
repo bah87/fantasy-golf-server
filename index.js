@@ -11,6 +11,7 @@ const db = require('./queries');
 const app = express();
 
 app.use(require('cookie-parser')());
+app.set('trust proxy', 1);
 app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
