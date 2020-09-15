@@ -63,6 +63,19 @@ app.post('/teams', db.createTeam);
 app.put('/teams', db.updateTeam);
 app.get('/teams', db.getTeams);
 app.post('/signup', db.signUp);
+app.get('/user', (req, res, next) => {
+  if (req.user) {
+    return res.status(200).json({
+      user: req.user,
+      authenticated: true,
+    });
+  } else {
+    return res.status(401).json({
+      error: 'User is not authenticated',
+      authenticated: false,
+    });
+  }
+});
 
 passport.serializeUser(function (user, done) {
   done(null, user);
