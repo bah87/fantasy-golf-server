@@ -68,12 +68,13 @@ app.get('/teams', db.getTeams);
 app.post('/signup', db.signUp);
 app.get('/user', (req, res, next) => {
   if (req) {
-    console.log('/user', req);
+    console.log('/user', req.sessions);
     return res.status(200).json({
       user: req.user,
       email: req.email,
       session: req.session,
       authenticated: true,
+      sessions: req.sessions,
     });
   } else {
     return res.status(401).json({
