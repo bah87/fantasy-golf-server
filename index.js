@@ -84,30 +84,56 @@ app.get('/user', (req, res, next) => {
     });
   }
 });
-app.post('/login', passport.authenticate('local'), function (req, res) {
-  console.log('isAuthenticated???', req.isAuthenticated());
-  if (req.body.remember) {
-    req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
-  } else {
-    req.session.cookie.expires = false; // Cookie expires at end of session
-  }
-  req.session.user = { email: req.body.email };
-  res.status(200).json({ session: req.session });
-});
-
-// app.post('/login', function (req, res, next) {
-//   passport.authenticate('local', function (err, user, info) {
-//     if (err) {
-//       return next(err);
-//     }
-//     if (!user) {
-//       return res.send({ message: 'no user...' });
-//     }
-
-//     // NEED TO CALL req.login()!!!
-//     req.login(user, next);
-//   })(req, res, next);
+// app.post('/login', passport.authenticate('local'), function (req, res) {
+//   console.log('isAuthenticated???', req.isAuthenticated());
+//   if (req.body.remember) {
+//     req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
+//   } else {
+//     req.session.cookie.expires = false; // Cookie expires at end of session
+//   }
+//   req.session.user = { email: req.body.email };
+//   res.status(200).json({ session: req.session });
 // });
+
+app.post('/login', function (req, res, next) {
+  // passport.authenticate('local', function (err, user, info) {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   if (!user) {
+  //     return res.send({ message: 'no user...' });
+  //   }
+
+  //   // NEED TO CALL req.login()!!!
+  //   req.logIn(user, next);
+  // })(req, res, next);
+  passport.authenticate('local', function (err, user, info) {
+    if (err) {
+      res.status(500).json({ message: 'Boo Passport!' });
+      return; //go no further
+      //until I figure out what errors can get thrown
+    }
+    if (user === false) {
+      console.log('Authentication failed. Here is my error:');
+      console.log(err);
+      console.log('Here is my info:');
+      console.log(info);
+      res.status(500).json({ message: 'Authentication failed.' });
+      return;
+    }
+    req.logIn(user, function (err) {
+      if (err) {
+        console.log('Login failed. This is the error message:');
+        console.log(err);
+        res.status(500).json({ message: 'Login failed.' });
+        return;
+      }
+      console.log("doAuth: Everything worked. I don't believe it.");
+
+      next();
+    });
+  })(req, res, next);
+});
 
 passport.serializeUser(function (user, done) {
   console.log('serializeUser', user);
