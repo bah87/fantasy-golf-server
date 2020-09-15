@@ -39,6 +39,15 @@ const getTeams = (_request, response) => {
   });
 };
 
+const getTeam = (request, response) => {
+  client.query('SELECT * FROM teams WHERE name = $1;', [request.body.email], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
 const updateTeam = (request, response) => {
   const { email, team } = request.body;
 
@@ -158,6 +167,7 @@ module.exports = {
   createTeam,
   updateTeam,
   getTeams,
+  getTeam,
   localPassportStrategy,
   signUp,
 };

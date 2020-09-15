@@ -66,6 +66,7 @@ app.delete('/salaries', db.deleteSalaries);
 app.post('/teams', db.createTeam);
 app.put('/teams', db.updateTeam);
 app.get('/teams', db.getTeams);
+app.post('/team', db.getTeam);
 app.post('/signup', db.signUp);
 app.get('/user', (req, res, next) => {
   console.log('isAuthenticated???', req.isAuthenticated());
