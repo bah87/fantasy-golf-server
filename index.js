@@ -95,44 +95,54 @@ app.get('/user', (req, res, next) => {
 //   res.status(200).json({ session: req.session });
 // });
 
-app.post('/login', function (req, res, next) {
-  // passport.authenticate('local', function (err, user, info) {
-  //   if (err) {
-  //     return next(err);
-  //   }
-  //   if (!user) {
-  //     return res.send({ message: 'no user...' });
-  //   }
+// app.post('/login', function (req, res, next) {
+//   // passport.authenticate('local', function (err, user, info) {
+//   //   if (err) {
+//   //     return next(err);
+//   //   }
+//   //   if (!user) {
+//   //     return res.send({ message: 'no user...' });
+//   //   }
 
-  //   // NEED TO CALL req.login()!!!
-  //   req.logIn(user, next);
-  // })(req, res, next);
-  passport.authenticate('local', function (err, user, info) {
-    if (err) {
-      res.status(500).json({ message: 'Boo Passport!' });
-      return; //go no further
-      //until I figure out what errors can get thrown
-    }
-    if (user === false) {
-      console.log('Authentication failed. Here is my error:');
-      console.log(err);
-      console.log('Here is my info:');
-      console.log(info);
-      res.status(500).json({ message: 'Authentication failed.' });
-      return;
-    }
-    req.logIn(user, function (err) {
-      if (err) {
-        console.log('Login failed. This is the error message:');
-        console.log(err);
-        res.status(500).json({ message: 'Login failed.' });
-        return;
-      }
-      console.log("doAuth: Everything worked. I don't believe it.");
+//   //   // NEED TO CALL req.login()!!!
+//   //   req.logIn(user, next);
+//   // })(req, res, next);
+//   passport.authenticate('local', function (err, user, info) {
+//     if (err) {
+//       res.status(500).json({ message: 'Boo Passport!' });
+//       return; //go no further
+//       //until I figure out what errors can get thrown
+//     }
+//     if (user === false) {
+//       console.log('Authentication failed. Here is my error:');
+//       console.log(err);
+//       console.log('Here is my info:');
+//       console.log(info);
+//       res.status(500).json({ message: 'Authentication failed.' });
+//       return;
+//     }
+//     req.logIn(user, function (err) {
+//       if (err) {
+//         console.log('Login failed. This is the error message:');
+//         console.log(err);
+//         res.status(500).json({ message: 'Login failed.' });
+//         return;
+//       }
+//       console.log("doAuth: Everything worked. I don't believe it.");
 
-      next();
-    });
-  })(req, res, next);
+//       next();
+//     });
+//   })(req, res, next);
+// });
+app.post('/login', passport.authenticate('local'), function (req, res, next) {
+  if (req.user) {
+    res.json(req.user);
+  } else {
+    //handle errors here, decide what you want to send back to your front end
+    //so that it knows the user wasn't found
+    res.statusCode = 503;
+    res.send({ message: 'Not Found' });
+  }
 });
 
 passport.serializeUser(function (user, done) {
