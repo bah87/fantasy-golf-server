@@ -103,8 +103,9 @@ const createSalary = (request, response) => {
   });
 };
 
-const localPassportStrategy = (req, email, password, done) => {
+const localPassportStrategy = (email, password, done) => {
   client.query('SELECT id, name, email, password FROM users WHERE email=$1', [email], (err, result) => {
+    console.log('authenticating...', err, result);
     if (err) {
       return done(err);
     }

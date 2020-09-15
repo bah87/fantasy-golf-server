@@ -55,10 +55,7 @@ app.use(function (req, res, next) {
 
 passport.use(
   'local',
-  new LocalStrategy(
-    { usernameField: 'email', passwordField: 'password', passReqToCallback: true },
-    db.localPassportStrategy
-  )
+  new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, db.localPassportStrategy)
 );
 
 app.get('/', db.getHome);
