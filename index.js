@@ -67,6 +67,7 @@ app.put('/teams', db.updateTeam);
 app.get('/teams', db.getTeams);
 app.post('/signup', db.signUp);
 app.get('/user', (req, res, next) => {
+  console.log('isAuthenticated???', req.isAuthenticated());
   if (req) {
     console.log('/user', req.cookies, req.user);
     return res.status(200).json({
