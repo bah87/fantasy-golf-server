@@ -68,7 +68,7 @@ app.get('/teams', db.getTeams);
 app.post('/signup', db.signUp);
 app.get('/user', (req, res, next) => {
   if (req) {
-    console.log('/user', req.session);
+    console.log('/user', req);
     return res.status(200).json({
       user: req.user,
       email: req.email,
